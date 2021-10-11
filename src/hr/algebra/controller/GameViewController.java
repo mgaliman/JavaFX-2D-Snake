@@ -22,7 +22,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 
 /**
  * FXML Controller class
@@ -44,22 +43,45 @@ public class GameViewController implements Initializable {
     static boolean gameOver = false;
     static Random rand = new Random();
 
+    //@FXML is used for getting variables from fxml
     @FXML
     private Canvas cnGamePlatform;
-
     @FXML
     private AnchorPane apGameWindow;
-
     @FXML
     private Label lbScore;
+    @FXML
+    private Label lbGameResult;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        lbGameResult.setText("\tPress Start!");
+    }
+    
+    public void btnStartClick() {
+        lbGameResult.setText("");
+        init();
+    }
 
+    private void init() {
+        speed = 5;
+        foodcolor = 0;
+        width = 20;
+        height = 20;
+        foodX = 0;
+        foodY = 0;
+        cornersize = 25;
+        snake = new ArrayList<>();
+        direction = Direction.LEFT;
+        gameOver = false;
+        rand = new Random();
+
+        //Food     
         newFood();
+
         GraphicsContext gc = cnGamePlatform.getGraphicsContext2D();
 
         new AnimationTimer() {
@@ -104,9 +126,7 @@ public class GameViewController implements Initializable {
     // tick
     public void tick(GraphicsContext gc) {
         if (gameOver) {
-            gc.setFill(Color.RED);
-            gc.setFont(new Font("", 50));
-            gc.fillText("GAME OVER", 100, 250);
+            lbGameResult.setText("\tGAME OVER\n To continue press start!");
             return;
         }
 
@@ -196,9 +216,7 @@ public class GameViewController implements Initializable {
             gc.setFill(Color.GREEN);
             gc.fillRect(c.x * cornersize, c.y * cornersize, cornersize - 2,
                     cornersize - 2);
-
         }
-
     }
 
     // food
@@ -216,7 +234,6 @@ public class GameViewController implements Initializable {
             foodcolor = rand.nextInt(5);
             speed++;
             break;
-
         }
-    }
+    }    
 }

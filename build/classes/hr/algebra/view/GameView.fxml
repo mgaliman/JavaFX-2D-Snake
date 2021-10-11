@@ -8,7 +8,7 @@
 
 <AnchorPane id="AnchorPane" fx:id="apGameWindow" prefHeight="768.0" prefWidth="1024.0" style="-fx-background-color: green;" stylesheets="@../../algebra.style/MainStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.algebra.controller.GameViewController">
    <children>
-      <Button fx:id="btnStart" layoutX="766.0" layoutY="580.0" mnemonicParsing="false" prefHeight="126.0" prefWidth="182.0" text="Start">
+      <Button fx:id="btnStart" layoutX="766.0" layoutY="580.0" mnemonicParsing="false" onMouseClicked="#btnStartClick" prefHeight="126.0" prefWidth="182.0" text="Start">
          <font>
             <Font name="Mistral" size="53.0" />
          </font>
@@ -24,5 +24,10 @@
          </font>
       </Label>
       <Canvas fx:id="cnGamePlatform" height="523.0" layoutX="23.0" layoutY="27.0" width="686.0" />
+      <Label fx:id="lbGameResult" layoutX="242.0" layoutY="257.0" prefHeight="255.0" prefWidth="541.0" textFill="#260bbc">
+         <font>
+            <Font size="50.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
