@@ -9,9 +9,6 @@ import javafx.scene.Scene;
 
 public class Game extends Application {
 
-    // variable    
-    static Direction direction = Direction.LEFT;
-
     @Override
     public void start(Stage primaryStage) throws IOException {
 

@@ -3,6 +3,7 @@
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -13,21 +14,47 @@
             <Font name="Mistral" size="53.0" />
          </font>
       </Button>
-      <Label layoutX="759.0" layoutY="27.0" prefHeight="19.0" prefWidth="81.0" text="Score">
+      <Label layoutX="747.0" layoutY="39.0" prefHeight="44.0" prefWidth="66.0" text="Score">
          <font>
             <Font name="Mistral" size="35.0" />
          </font>
       </Label>
-      <Label fx:id="lbScore" layoutX="840.0" layoutY="27.0" prefHeight="44.0" prefWidth="81.0" text="0">
+      <Label fx:id="lbScore" layoutX="813.0" layoutY="39.0" prefHeight="44.0" prefWidth="49.0" text="-">
          <font>
             <Font name="Mistral" size="35.0" />
          </font>
       </Label>
-      <Canvas fx:id="cnGamePlatform" height="523.0" layoutX="23.0" layoutY="27.0" width="686.0" />
-      <Label fx:id="lbGameResult" layoutX="242.0" layoutY="257.0" prefHeight="255.0" prefWidth="541.0" textFill="#260bbc">
+      <Canvas fx:id="cnGamePlatform" height="510.0" layoutX="15.0" layoutY="18.0" width="510.0" />
+      <Label fx:id="lbGameResult" layoutX="553.0" layoutY="240.0" prefHeight="255.0" prefWidth="455.0" textFill="#260bbc">
          <font>
-            <Font size="50.0" />
+            <Font size="40.0" />
          </font>
       </Label>
+      <Label layoutX="23.0" layoutY="530.0" prefHeight="50.0" prefWidth="81.0" text="Chat">
+         <font>
+            <Font name="Mistral" size="40.0" />
+         </font>
+      </Label>
+      <Label layoutX="669.0" layoutY="118.0" prefHeight="44.0" prefWidth="49.0" text="P 1">
+         <font>
+            <Font name="Mistral" size="35.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbScore1" layoutX="734.0" layoutY="118.0" prefHeight="44.0" prefWidth="49.0" text="-">
+         <font>
+            <Font name="Mistral" size="35.0" />
+         </font>
+      </Label>
+      <Label layoutX="800.0" layoutY="118.0" prefHeight="44.0" prefWidth="49.0" text="P 2">
+         <font>
+            <Font name="Mistral" size="35.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbScore2" layoutX="866.0" layoutY="118.0" prefHeight="44.0" prefWidth="49.0" text="-">
+         <font>
+            <Font name="Mistral" size="35.0" />
+         </font>
+      </Label>
+      <TextArea layoutX="23.0" layoutY="580.0" prefHeight="169.0" prefWidth="536.0" text="P1: CONNECTED&#10;P2: CONNECTED&#10;P1: Hello!&#10;P2: Hey!&#10;P1: How are you?&#10;P2: Great, you?&#10;P1: Also great.&#10;P2: Great.&#10;P1: ...&#10;P2: ..." />
    </children>
 </AnchorPane>

@@ -10,7 +10,7 @@ package hr.algebra.model;
  * @author mgali
  */
 public class Corner {
-
+    
     public int x;
     public int y;
 

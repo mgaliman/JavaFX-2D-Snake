@@ -31,13 +31,13 @@ import javafx.scene.paint.Color;
 public class GameViewController implements Initializable {
 
     // variable
-    static int speed = 5;
-    static int foodcolor = 0;
-    static int width = 20;
-    static int height = 20;
-    static int foodX = 0;
-    static int foodY = 0;
-    static int cornersize = 25;
+    static int speed;
+    static int foodcolor;
+    static int width;
+    static int height;
+    static int foodX;
+    static int foodY;
+    static int cornersize;
     static List<Corner> snake = new ArrayList<>();
     static Direction direction = Direction.LEFT;
     static boolean gameOver = false;
@@ -60,9 +60,9 @@ public class GameViewController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         lbGameResult.setText("\tPress Start!");
     }
-    
+
     public void btnStartClick() {
-        lbGameResult.setText("");
+        lbGameResult.setText("\tGame is running!");
         init();
     }
 
@@ -79,15 +79,26 @@ public class GameViewController implements Initializable {
         gameOver = false;
         rand = new Random();
 
-        //Food     
+        //Food for snake 
         newFood();
 
+        //Drawing on canvas           
         GraphicsContext gc = cnGamePlatform.getGraphicsContext2D();
 
+        //Keeps the game going
         new AnimationTimer() {
+
+            @Override
+            public void stop() {
+                if (gameOver) {
+                    super.stop();                    
+                }
+            }
+
             long lastTick = 0;
 
             public void handle(long now) {
+                System.out.println(now);
                 if (lastTick == 0) {
                     lastTick = now;
                     tick(gc);
@@ -101,7 +112,7 @@ public class GameViewController implements Initializable {
             }
         }.start();
 
-        // control
+        //Snake control
         apGameWindow.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
             if (key.getCode() == KeyCode.W) {
                 direction = Direction.UP;
@@ -117,7 +128,7 @@ public class GameViewController implements Initializable {
             }
         });
 
-        // add start snake parts
+        //Adding start snake parts
         snake.add(new Corner(width / 2, height / 2));
         snake.add(new Corner(width / 2, height / 2));
         snake.add(new Corner(width / 2, height / 2));
@@ -221,19 +232,19 @@ public class GameViewController implements Initializable {
 
     // food
     public void newFood() {
-        start:
+        /*start:
         while (true) {
-            foodX = rand.nextInt(width);
-            foodY = rand.nextInt(height);
-
-            for (Corner c : snake) {
-                if (c.x == foodX && c.y == foodY) {
-                    continue start;
-                }
-            }
-            foodcolor = rand.nextInt(5);
-            speed++;
-            break;
+        foodX = rand.nextInt(width);
+        foodY = rand.nextInt(height);
+        
+        for (Corner c : snake) {
+        if (c.x == foodX && c.y == foodY) {
+        continue start;
         }
-    }    
+        }
+        foodcolor = rand.nextInt(5);
+        speed++;
+        break;
+        }*/
+    }
 }
