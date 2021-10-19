@@ -232,7 +232,7 @@ public class GameViewController implements Initializable {
 
     // food
     public void newFood() {
-        /*start:
+        start:
         while (true) {
         foodX = rand.nextInt(width);
         foodY = rand.nextInt(height);
@@ -245,6 +245,6 @@ public class GameViewController implements Initializable {
         foodcolor = rand.nextInt(5);
         speed++;
         break;
-        }*/
+        }
     }
 }
