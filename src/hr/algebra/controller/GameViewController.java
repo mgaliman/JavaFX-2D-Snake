@@ -106,8 +106,8 @@ public class GameViewController implements Initializable {
                 }
 
                 if (now - lastTick > 1000000000 / speed) {
-                    lastTick = now;
-                    tick(gc);
+                lastTick = now;
+                tick(gc);
                 }
             }
         }.start();
