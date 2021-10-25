@@ -60,7 +60,7 @@ public class GameViewController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         lbGameResult.setText("\tPress Start!");
     }
-
+    
     public void btnStartClick() {
         lbGameResult.setText("\tGame is running!");
         init();
@@ -82,7 +82,7 @@ public class GameViewController implements Initializable {
         //Food for snake 
         newFood();
 
-        //Drawing on canvas           
+        //Drawing on canvas
         GraphicsContext gc = cnGamePlatform.getGraphicsContext2D();
 
         //Keeps the game going
@@ -98,7 +98,6 @@ public class GameViewController implements Initializable {
             long lastTick = 0;
 
             public void handle(long now) {
-                System.out.println(now);
                 if (lastTick == 0) {
                     lastTick = now;
                     tick(gc);
@@ -106,6 +105,7 @@ public class GameViewController implements Initializable {
                 }
 
                 if (now - lastTick > 1000000000 / speed) {
+                System.out.println(now);
                 lastTick = now;
                 tick(gc);
                 }

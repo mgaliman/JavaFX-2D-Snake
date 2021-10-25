@@ -9,12 +9,12 @@
 
 <AnchorPane id="AnchorPane" fx:id="apGameWindow" prefHeight="768.0" prefWidth="1024.0" style="-fx-background-color: green;" stylesheets="@../../algebra.style/MainStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.algebra.controller.GameViewController">
    <children>
-      <Button fx:id="btnStart" layoutX="766.0" layoutY="580.0" mnemonicParsing="false" onMouseClicked="#btnStartClick" prefHeight="126.0" prefWidth="182.0" text="Start">
+      <Button fx:id="btnStart" layoutX="750.0" layoutY="580.0" mnemonicParsing="false" onMouseClicked="#btnStartClick" prefHeight="126.0" prefWidth="198.0" text="BEGIN">
          <font>
             <Font name="Mistral" size="53.0" />
          </font>
       </Button>
-      <Label layoutX="747.0" layoutY="39.0" prefHeight="44.0" prefWidth="66.0" text="Score">
+      <Label layoutX="719.0" layoutY="39.0" prefHeight="44.0" prefWidth="81.0" text="SCORE">
          <font>
             <Font name="Mistral" size="35.0" />
          </font>
@@ -30,7 +30,7 @@
             <Font size="40.0" />
          </font>
       </Label>
-      <Label layoutX="23.0" layoutY="530.0" prefHeight="50.0" prefWidth="81.0" text="Chat">
+      <Label layoutX="23.0" layoutY="530.0" prefHeight="50.0" prefWidth="81.0" text="CHAT">
          <font>
             <Font name="Mistral" size="40.0" />
          </font>
