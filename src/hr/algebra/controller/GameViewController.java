@@ -104,7 +104,7 @@ public class GameViewController implements Initializable {
                     return;
                 }
 
-                if (now - lastTick > 1000000000 / speed) {
+                if (now - lastTick > 1000000000 / speed) { //Problem line
                 System.out.println(now);
                 lastTick = now;
                 tick(gc);
