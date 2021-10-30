@@ -1,5 +1,3 @@
-
-import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,40 +6,27 @@ import javafx.scene.Scene;
 
 public class Game extends Application {
 
-    private Stage stage;
-
+    private static Stage mainStage;
+    
     @Override
-    public void start(Stage primaryStage) throws IOException {
-
+    public void start(Stage stage) throws Exception {
+        
+        mainStage = stage;
+        
         Parent root = FXMLLoader.load(getClass().getResource(
-                "hr/algebra/view/GameView.fxml"));
-
+                "hr/algebra/view/MainMenuView.fxml"));
+        
         Scene scene = new Scene(root);
-
-        primaryStage.setTitle("SNAKE GAME");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-
-    }
-
-    //Scene changer
-    public void switchScene(String fxmlFile) throws IOException {
-
-        FXMLLoader loader = new FXMLLoader(getClass()
-                .getResource(fxmlFile));
-        Parent root;
-        {
-            root = (Parent) loader.load();
-            if (fxmlFile.equals("calculator.fxml")) {
-                //BasicCalculatorView controller = (BasicCalculatorView) loader.getController();
-                //controller.setModel(new BasicCalculatorModelTest(controller));
-                //controller.setLogic(this);
-            }
-            this.stage.setScene(new Scene(root));
-        }
+        
+        stage.setScene(scene);
+        stage.show();
     }
 
     public static void main(String[] args) {
         launch(args);
+    }
+    
+    public static Stage getMainStage() {
+        return mainStage;
     }
 }

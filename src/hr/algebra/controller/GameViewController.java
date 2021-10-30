@@ -17,10 +17,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 /**
@@ -52,6 +54,14 @@ public class GameViewController implements Initializable {
     private Label lbScore;
     @FXML
     private Label lbGameResult;
+    @FXML
+    private StackPane spGame;
+    @FXML
+    private Button btnStart;
+    @FXML
+    private Label lbScore1;
+    @FXML
+    private Label lbScore2;
 
     /**
      * Initializes the controller class.
@@ -61,6 +71,7 @@ public class GameViewController implements Initializable {
         lbGameResult.setText("\tPress Start!");
     }
     
+    @FXML
     public void btnStartClick() {
         lbGameResult.setText("\tGame is running!");
         init();
