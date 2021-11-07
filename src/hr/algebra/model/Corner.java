@@ -11,9 +11,9 @@ import java.io.Serializable;
  *
  * @author mgali
  */
-public class Corner implements Serializable{
-    
-    public int x;    
+public class Corner implements Serializable {
+
+    public int x;
     public int y;
 
     public Corner(int x, int y) {

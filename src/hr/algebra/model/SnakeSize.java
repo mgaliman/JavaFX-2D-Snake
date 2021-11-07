@@ -5,13 +5,15 @@
  */
 package hr.algebra.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
  * @author mgali
  */
-public class SnakeSize {
+public class SnakeSize implements Serializable {
+
     public void snakeSize(List<Corner> snake) {
         for (int i = snake.size() - 1; i >= 1; i--) {
             snake.get(i).x = snake.get(i - 1).x;
