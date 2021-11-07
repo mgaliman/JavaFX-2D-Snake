@@ -38,7 +38,7 @@ public class GameViewController implements Initializable {
 
     // variable
     static int speed;
-    static int foodcolor;
+    static int foodColor;
     static int width;
     static int height;
     static int foodX;
@@ -76,7 +76,7 @@ public class GameViewController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         lbGameResult.setText("\tPress Start!");
     }
-    
+
     @FXML
     public void btnStartClick() {
         lbGameResult.setText("\tGame is running!");
@@ -84,20 +84,20 @@ public class GameViewController implements Initializable {
     }
 
     @FXML
-    public void btnMainMenuClick() throws IOException {        
+    public void btnMainMenuClick() throws IOException {
         Parent root = FXMLLoader.load(
                 getClass().getResource("/hr/algebra/view/MainMenuView.fxml"));
-        
+
         Scene scene = btnMainMenu.getScene();
-        
+
         spGame.getChildren().add(root);
-        
+
         spGame.getChildren().remove(apGameWindow);
     }
-    
+
     private void init() {
         speed = 5;
-        foodcolor = 0;
+        foodColor = 0;
         width = 20;
         height = 20;
         foodX = 0;
@@ -106,7 +106,6 @@ public class GameViewController implements Initializable {
         snake = new ArrayList<>();
         direction = Direction.LEFT;
         gameOver = false;
-        rand = new Random();
 
         //Food for snake 
         newFood();
@@ -120,7 +119,7 @@ public class GameViewController implements Initializable {
             @Override
             public void stop() {
                 if (gameOver) {
-                    super.stop();                    
+                    super.stop();
                 }
             }
 
@@ -134,9 +133,8 @@ public class GameViewController implements Initializable {
                 }
 
                 if (now - lastTick > 1000000000 / speed) { //Problem line
-                System.out.println(now);
-                lastTick = now;
-                tick(gc);
+                    lastTick = now;
+                    tick(gc);
                 }
             }
         }.start();
@@ -158,9 +156,9 @@ public class GameViewController implements Initializable {
         });
 
         //Adding start snake parts
-        snake.add(new Corner(width / 2, height / 2));
-        snake.add(new Corner(width / 2, height / 2));
-        snake.add(new Corner(width / 2, height / 2));
+        for (int i = 0; i < 3; i++) {
+            snake.add(new Corner(width / 2, height / 2));
+        }
     }
 
     // tick
@@ -175,6 +173,7 @@ public class GameViewController implements Initializable {
             snake.get(i).y = snake.get(i - 1).y;
         }
 
+        //Change direction and check if it hits wall
         switch (direction) {
             case UP:
                 snake.get(0).y--;
@@ -184,7 +183,7 @@ public class GameViewController implements Initializable {
                 break;
             case DOWN:
                 snake.get(0).y++;
-                if (snake.get(0).y > height) {
+                if (snake.get(0).y >= height) {
                     gameOver = true;
                 }
                 break;
@@ -196,7 +195,7 @@ public class GameViewController implements Initializable {
                 break;
             case RIGHT:
                 snake.get(0).x++;
-                if (snake.get(0).x > width) {
+                if (snake.get(0).x >= width) {
                     gameOver = true;
                 }
                 break;
@@ -227,7 +226,7 @@ public class GameViewController implements Initializable {
         // random foodcolor
         Color cc = Color.WHITE;
 
-        switch (foodcolor) {
+        switch (foodColor) {
             case 0:
                 cc = Color.PURPLE;
                 break;
@@ -261,19 +260,13 @@ public class GameViewController implements Initializable {
 
     // food
     public void newFood() {
-        start:
         while (true) {
-        foodX = rand.nextInt(width);
-        foodY = rand.nextInt(height);
-        
-        for (Corner c : snake) {
-        if (c.x == foodX && c.y == foodY) {
-        continue start;
-        }
-        }
-        foodcolor = rand.nextInt(5);
-        speed++;
-        break;
+            foodX = rand.nextInt(width);
+            foodY = rand.nextInt(height);
+
+            foodColor = rand.nextInt(5);
+            speed++;
+            break;
         }
     }
 }
