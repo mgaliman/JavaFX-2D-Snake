@@ -7,6 +7,7 @@ package hr.algebra.controller;
 
 import com.sun.javafx.scene.traversal.Direction;
 import hr.algebra.model.Corner;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,10 @@ import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -59,6 +63,8 @@ public class GameViewController implements Initializable {
     @FXML
     private Button btnStart;
     @FXML
+    private Button btnMainMenu;
+    @FXML
     private Label lbScore1;
     @FXML
     private Label lbScore2;
@@ -77,6 +83,18 @@ public class GameViewController implements Initializable {
         init();
     }
 
+    @FXML
+    public void btnMainMenuClick() throws IOException {        
+        Parent root = FXMLLoader.load(
+                getClass().getResource("/hr/algebra/view/MainMenuView.fxml"));
+        
+        Scene scene = btnMainMenu.getScene();
+        
+        spGame.getChildren().add(root);
+        
+        spGame.getChildren().remove(apGameWindow);
+    }
+    
     private void init() {
         speed = 5;
         foodcolor = 0;

@@ -31,6 +31,10 @@ public class MainMenuViewController implements Initializable {
     private AnchorPane apMainMenuWindow;
     @FXML
     private Label lbStartGame;
+    @FXML
+    private Label lbExit;
+    @FXML
+    private Label lbSettings;
 
     /**
      * Initializes the controller class.
@@ -41,8 +45,7 @@ public class MainMenuViewController implements Initializable {
     }    
 
     @FXML
-    private void StartGameClick(MouseEvent event) throws IOException {
-        
+    private void StartGameClick(MouseEvent event) throws IOException {        
         Parent root = FXMLLoader.load(
                 getClass().getResource("/hr/algebra/view/GameView.fxml"));
         
@@ -53,4 +56,20 @@ public class MainMenuViewController implements Initializable {
         spMainMenu.getChildren().remove(apMainMenuWindow);
     }
     
+    @FXML
+    private void lbSettingsClick(MouseEvent event) throws IOException {
+        Parent root = FXMLLoader.load(
+                getClass().getResource("/hr/algebra/view/SettingsView.fxml"));
+        
+        Scene scene = lbStartGame.getScene();
+        
+        spMainMenu.getChildren().add(root);
+        
+        spMainMenu.getChildren().remove(apMainMenuWindow);
+    }
+
+    @FXML
+    private void lbExitClick(MouseEvent event) {
+        javafx.application.Platform.exit();
+    }    
 }

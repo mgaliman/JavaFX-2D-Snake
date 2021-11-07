@@ -12,7 +12,7 @@
    <children>
       <AnchorPane id="AnchorPane" fx:id="apGameWindow" prefHeight="768.0" prefWidth="1024.0" style="-fx-background-color: green;">
          <children>
-            <Button fx:id="btnStart" layoutX="750.0" layoutY="580.0" mnemonicParsing="false" onMouseClicked="#btnStartClick" prefHeight="126.0" prefWidth="198.0" text="BEGIN">
+            <Button fx:id="btnStart" layoutX="726.0" layoutY="495.0" mnemonicParsing="false" onMouseClicked="#btnStartClick" prefHeight="77.0" prefWidth="198.0" text="START">
                <font>
                   <Font name="Mistral" size="53.0" />
                </font>
@@ -28,7 +28,7 @@
                </font>
             </Label>
             <Canvas fx:id="cnGamePlatform" height="510.0" layoutX="15.0" layoutY="18.0" width="510.0" />
-            <Label fx:id="lbGameResult" layoutX="553.0" layoutY="240.0" prefHeight="255.0" prefWidth="455.0" textFill="#260bbc">
+            <Label fx:id="lbGameResult" layoutX="556.0" layoutY="204.0" prefHeight="195.0" prefWidth="455.0" textFill="#260bbc">
                <font>
                   <Font size="40.0" />
                </font>
@@ -59,6 +59,11 @@
                </font>
             </Label>
             <TextArea layoutX="23.0" layoutY="580.0" prefHeight="169.0" prefWidth="536.0" text="P1: CONNECTED&#10;P2: CONNECTED&#10;P1: Hello!&#10;P2: Hey!&#10;P1: How are you?&#10;P2: Great, you?&#10;P1: Also great.&#10;P2: Great.&#10;P1: ...&#10;P2: ..." />
+            <Button fx:id="btnMainMenu" layoutX="726.0" layoutY="625.0" mnemonicParsing="false" onMouseClicked="#btnMainMenuClick" prefHeight="85.0" prefWidth="198.0" text="MENU">
+               <font>
+                  <Font name="Mistral" size="53.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </children>
