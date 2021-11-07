@@ -7,6 +7,7 @@ package hr.algebra.controller;
 
 import com.sun.javafx.scene.traversal.Direction;
 import hr.algebra.model.Corner;
+import hr.algebra.model.SnakeSize;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -48,6 +49,7 @@ public class GameViewController implements Initializable {
     static Direction direction = Direction.LEFT;
     static boolean gameOver = false;
     static Random rand = new Random();
+    SnakeSize snakeSize = new SnakeSize();
 
     //@FXML is used for getting variables from fxml
     @FXML
@@ -102,7 +104,7 @@ public class GameViewController implements Initializable {
         height = 20;
         foodX = 0;
         foodY = 0;
-        cornersize = 25;
+        cornersize = 25;        
         snake = new ArrayList<>();
         direction = Direction.LEFT;
         gameOver = false;
@@ -167,11 +169,9 @@ public class GameViewController implements Initializable {
             lbGameResult.setText("\tGAME OVER\n To continue press start!");
             return;
         }
-
-        for (int i = snake.size() - 1; i >= 1; i--) {
-            snake.get(i).x = snake.get(i - 1).x;
-            snake.get(i).y = snake.get(i - 1).y;
-        }
+        
+        //Get snake size
+        snakeSize.snakeSize(snake);
 
         //Change direction and check if it hits wall
         switch (direction) {
@@ -201,13 +201,13 @@ public class GameViewController implements Initializable {
                 break;
         }
 
-        // eat food
+        //Eat food
         if (foodX == snake.get(0).x && foodY == snake.get(0).y) {
             snake.add(new Corner(-1, -1));
             newFood();
         }
 
-        // self destroy
+        //Self destroy
         for (int i = 1; i < snake.size(); i++) {
             if (snake.get(0).x == snake.get(i).x && snake.get(0).y
                     == snake.get(i).y) {
@@ -215,15 +215,14 @@ public class GameViewController implements Initializable {
             }
         }
 
-        // fill
-        // background
+        //Fill background
         gc.setFill(Color.BEIGE);
         gc.fillRect(0, 0, width * cornersize, height * cornersize);
 
-        // score        
+        //Score        
         lbScore.setText(String.valueOf(speed - 6));
 
-        // random foodcolor
+        //Random foodColor
         Color cc = Color.WHITE;
 
         switch (foodColor) {
@@ -237,17 +236,17 @@ public class GameViewController implements Initializable {
                 cc = Color.RED;
                 break;
             case 3:
-                cc = Color.PINK;
+                cc = Color.BLUE;
                 break;
             case 4:
-                cc = Color.BLACK;
+                cc = Color.KHAKI;
                 break;
         }
         gc.setFill(cc);
         gc.fillOval(foodX * cornersize, foodY * cornersize, cornersize,
                 cornersize);
 
-        // snake
+        //Snake color
         for (Corner c : snake) {
             gc.setFill(Color.LIGHTGREEN);
             gc.fillRect(c.x * cornersize, c.y * cornersize, cornersize - 1,
@@ -258,12 +257,11 @@ public class GameViewController implements Initializable {
         }
     }
 
-    // food
+    //Food
     public void newFood() {
         while (true) {
             foodX = rand.nextInt(width);
             foodY = rand.nextInt(height);
-
             foodColor = rand.nextInt(5);
             speed++;
             break;

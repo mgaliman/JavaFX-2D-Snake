@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 public class Corner implements Serializable{
     
-    public int x;
+    public int x;    
     public int y;
 
     public Corner(int x, int y) {
