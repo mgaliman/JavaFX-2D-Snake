@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class SnakeSize implements Serializable {
 
-    public void snakeSize(List<Corner> snake) {
+    public void snakeSize(List<Position> snake) {
         for (int i = snake.size() - 1; i >= 1; i--) {
             snake.get(i).x = snake.get(i - 1).x;
             snake.get(i).y = snake.get(i - 1).y;

@@ -5,18 +5,16 @@
  */
 package hr.algebra.model;
 
-import java.io.Serializable;
-
 /**
  *
  * @author mgali
  */
-public class Corner implements Serializable {
+public class Position {
 
     public int x;
     public int y;
 
-    public Corner(int x, int y) {
+    public Position(int x, int y) {
         this.x = x;
         this.y = y;
     }

@@ -6,26 +6,30 @@
 package hr.algebra.controller;
 
 import com.sun.javafx.scene.traversal.Direction;
-import hr.algebra.model.Corner;
+import hr.algebra.model.Position;
+import hr.algebra.model.Food;
 import hr.algebra.model.SnakeSize;
+import hr.algebra.utilities.SerializationUtils;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -38,14 +42,13 @@ import javafx.scene.paint.Color;
 public class GameViewController implements Initializable {
 
     // variable
+    static String fileName = "Serialization.ser";
     static int speed;
-    static int foodColor;
     static int width;
     static int height;
-    static int foodX;
-    static int foodY;
+    Food food = new Food();
     static int cornersize;
-    static List<Corner> snake = new ArrayList<>();
+    static List<Position> snake = new ArrayList<>();
     static Direction direction = Direction.LEFT;
     static boolean gameOver = false;
     static Random rand = new Random();
@@ -70,6 +73,10 @@ public class GameViewController implements Initializable {
     private Label lbScore1;
     @FXML
     private Label lbScore2;
+    @FXML
+    private Button btnLoad;
+    @FXML
+    private Button btnSave;
 
     /**
      * Initializes the controller class.
@@ -82,7 +89,25 @@ public class GameViewController implements Initializable {
     @FXML
     public void btnStartClick() {
         lbGameResult.setText("\tGame is running!");
-        init();
+        food.foodColor = 0;
+        food.foodX = 0;
+        food.foodY = 0;
+        init(true);
+    }
+
+    @FXML
+    private void btnSaveClick(MouseEvent event) {
+        dataSeriazlization();
+    }
+
+    @FXML
+    private void btnLoadClick(MouseEvent event) {
+        try {
+            SerializationUtils.read(fileName);
+            init(false);
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(GameViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
@@ -90,27 +115,24 @@ public class GameViewController implements Initializable {
         Parent root = FXMLLoader.load(
                 getClass().getResource("/hr/algebra/view/MainMenuView.fxml"));
 
-        Scene scene = btnMainMenu.getScene();
-
         spGame.getChildren().add(root);
 
         spGame.getChildren().remove(apGameWindow);
     }
 
-    private void init() {
+    private void init(boolean button) {
         speed = 5;
-        foodColor = 0;
         width = 20;
         height = 20;
-        foodX = 0;
-        foodY = 0;
-        cornersize = 25;        
+        cornersize = 25;
         snake = new ArrayList<>();
         direction = Direction.LEFT;
         gameOver = false;
 
-        //Food for snake 
-        newFood();
+        if (button) {
+            //Food for snake 
+            newFood();
+        }
 
         //Drawing on canvas
         GraphicsContext gc = cnGamePlatform.getGraphicsContext2D();
@@ -159,7 +181,7 @@ public class GameViewController implements Initializable {
 
         //Adding start snake parts
         for (int i = 0; i < 3; i++) {
-            snake.add(new Corner(width / 2, height / 2));
+            snake.add(new Position(width / 2, height / 2));
         }
     }
 
@@ -169,7 +191,7 @@ public class GameViewController implements Initializable {
             lbGameResult.setText("\tGAME OVER\n To continue press start!");
             return;
         }
-        
+
         //Get snake size
         snakeSize.snakeSize(snake);
 
@@ -202,9 +224,10 @@ public class GameViewController implements Initializable {
         }
 
         //Eat food
-        if (foodX == snake.get(0).x && foodY == snake.get(0).y) {
-            snake.add(new Corner(-1, -1));
+        if (food.foodX == snake.get(0).x && food.foodY == snake.get(0).y) {
+            snake.add(new Position(-1, -1));
             newFood();
+            System.out.println("Food eaten");
         }
 
         //Self destroy
@@ -220,12 +243,13 @@ public class GameViewController implements Initializable {
         gc.fillRect(0, 0, width * cornersize, height * cornersize);
 
         //Score        
-        lbScore.setText(String.valueOf(speed - 6));
+        food.score = speed - 6;
+        lbScore.setText(String.valueOf(food.score));
 
         //Random foodColor
         Color cc = Color.WHITE;
 
-        switch (foodColor) {
+        switch (food.foodColor) {
             case 0:
                 cc = Color.PURPLE;
                 break;
@@ -243,16 +267,16 @@ public class GameViewController implements Initializable {
                 break;
         }
         gc.setFill(cc);
-        gc.fillOval(foodX * cornersize, foodY * cornersize, cornersize,
+        gc.fillOval(food.foodX * cornersize, food.foodY * cornersize, cornersize,
                 cornersize);
 
         //Snake color
-        for (Corner c : snake) {
+        for (Position p : snake) {
             gc.setFill(Color.LIGHTGREEN);
-            gc.fillRect(c.x * cornersize, c.y * cornersize, cornersize - 1,
+            gc.fillRect(p.x * cornersize, p.y * cornersize, cornersize - 1,
                     cornersize - 1);
             gc.setFill(Color.GREEN);
-            gc.fillRect(c.x * cornersize, c.y * cornersize, cornersize - 2,
+            gc.fillRect(p.x * cornersize, p.y * cornersize, cornersize - 2,
                     cornersize - 2);
         }
     }
@@ -260,11 +284,20 @@ public class GameViewController implements Initializable {
     //Food
     public void newFood() {
         while (true) {
-            foodX = rand.nextInt(width);
-            foodY = rand.nextInt(height);
-            foodColor = rand.nextInt(5);
+            food.foodX = rand.nextInt(width);
+            food.foodY = rand.nextInt(height);
+
+            food.foodColor = rand.nextInt(5);
             speed++;
             break;
+        }
+    }
+
+    private void dataSeriazlization() {
+        try {
+            SerializationUtils.write(food, fileName);
+        } catch (IOException ex) {
+            Logger.getLogger(GameViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
