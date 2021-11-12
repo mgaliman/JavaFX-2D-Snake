@@ -15,18 +15,18 @@ import java.util.Objects;
  *
  * @author mgali
  */
-public class Food implements Serializable{
-    
+public class Food implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    
+
     public int foodColor;
     public int foodX;
     public int foodY;
     public int score;
 
-    public Food() {   
+    public Food() {
     }
-    
+
     private void writeObject(ObjectOutputStream oos) throws IOException {
         oos.defaultWriteObject();
         oos.writeInt(foodColor);

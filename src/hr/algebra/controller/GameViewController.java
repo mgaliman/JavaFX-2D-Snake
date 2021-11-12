@@ -89,9 +89,6 @@ public class GameViewController implements Initializable {
     @FXML
     public void btnStartClick() {
         lbGameResult.setText("\tGame is running!");
-        food.foodColor = 0;
-        food.foodX = 0;
-        food.foodY = 0;
         init(true);
     }
 
@@ -102,7 +99,10 @@ public class GameViewController implements Initializable {
 
     @FXML
     private void btnLoadClick(MouseEvent event) {
-        try {
+        try {            
+            food.foodX = 2;
+            food.foodY = 2;
+            food.foodColor = 2;
             SerializationUtils.read(fileName);
             init(false);
         } catch (IOException | ClassNotFoundException ex) {
@@ -227,6 +227,7 @@ public class GameViewController implements Initializable {
         if (food.foodX == snake.get(0).x && food.foodY == snake.get(0).y) {
             snake.add(new Position(-1, -1));
             newFood();
+            food.score++;
             System.out.println("Food eaten");
         }
 
@@ -242,8 +243,7 @@ public class GameViewController implements Initializable {
         gc.setFill(Color.BEIGE);
         gc.fillRect(0, 0, width * cornersize, height * cornersize);
 
-        //Score        
-        food.score = speed - 6;
+        //Score     
         lbScore.setText(String.valueOf(food.score));
 
         //Random foodColor
@@ -288,7 +288,7 @@ public class GameViewController implements Initializable {
             food.foodY = rand.nextInt(height);
 
             food.foodColor = rand.nextInt(5);
-            speed++;
+            speed++;            
             break;
         }
     }
