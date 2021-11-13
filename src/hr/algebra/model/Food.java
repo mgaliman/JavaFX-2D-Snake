@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  *
@@ -19,27 +18,59 @@ public class Food implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public int foodColor;
-    public int foodX;
-    public int foodY;
-    public int score;
+    private int foodColor;
+    private int foodX;
+    private int foodY;
+    private int score;
 
-    public Food() {
+    public int getFoodColor() {
+        return foodColor;
     }
 
+    public void setFoodColor(int foodColor) {
+        this.foodColor = foodColor;
+    }
+
+    public int getFoodX() {
+        return foodX;
+    }
+
+    public void setFoodX(int foodX) {
+        this.foodX = foodX;
+    }
+
+    public int getFoodY() {
+        return foodY;
+    }
+
+    public void setFoodY(int foodY) {
+        this.foodY = foodY;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }    
+    
+    public Food() {
+    }
+    
     private void writeObject(ObjectOutputStream oos) throws IOException {
         oos.defaultWriteObject();
-        oos.writeInt(foodColor);
-        oos.writeInt(foodX);
-        oos.writeInt(foodY);
-        oos.writeInt(score);
+        oos.writeInt(getFoodColor());
+        oos.writeInt(getFoodX());
+        oos.writeInt(getFoodY());
+        oos.writeInt(getScore());
     }
 
     private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
         ois.defaultReadObject();
-        foodColor = ois.readInt();
-        foodX = ois.readInt();
-        foodY = ois.readInt();
-        score = ois.readInt();
-    }
+        setFoodColor(ois.readInt());
+        setFoodX(ois.readInt());
+        setFoodY(ois.readInt());
+        setScore(ois.readInt());
+    }  
 }

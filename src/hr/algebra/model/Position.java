@@ -16,9 +16,28 @@ import java.io.Serializable;
  */
 public class Position implements Serializable {
 
-    public int x;
-    public int y;
+    private int x;
+    private int y;   
 
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }    
+    
+    public Position() {
+    }    
+    
     public Position(int x, int y) {
         this.x = x;
         this.y = y;
@@ -26,13 +45,18 @@ public class Position implements Serializable {
     
     private void writeObject(ObjectOutputStream oos) throws IOException {
         oos.defaultWriteObject();
-        oos.writeInt(x);
-        oos.writeInt(y);
+        oos.writeInt(getX());
+        oos.writeInt(getY());
     }
 
     private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
         ois.defaultReadObject();
-        x = ois.readInt();
-        y = ois.readInt();
+        setX(ois.readInt());
+        setY(ois.readInt());
+    }
+
+    @Override
+    public String toString() {
+        return "Position{" + "x=" + x + ", y=" + y + '}';
     }
 }

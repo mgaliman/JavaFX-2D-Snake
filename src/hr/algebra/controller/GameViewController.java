@@ -46,9 +46,10 @@ public class GameViewController implements Initializable {
     static int speed;
     static int width;
     static int height;
-    Food food = new Food();
+    static Food food = new Food();
     static int cornersize;
     static List<Position> snake = new ArrayList<>();
+    static Position startingPosition = new Position();
     static Direction direction = Direction.LEFT;
     static boolean gameOver = false;
     static Random rand = new Random();
@@ -99,11 +100,9 @@ public class GameViewController implements Initializable {
 
     @FXML
     private void btnLoadClick(MouseEvent event) {
-        try {            
-            food.foodX = 2;
-            food.foodY = 2;
-            food.foodColor = 2;
-            SerializationUtils.read(fileName);
+        try {
+            //food = (Food)SerializationUtils.read(fileName);
+            startingPosition = (Position) SerializationUtils.read(fileName);
             init(false);
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(GameViewController.class.getName()).log(Level.SEVERE, null, ex);
@@ -126,7 +125,11 @@ public class GameViewController implements Initializable {
         height = 20;
         cornersize = 25;
         snake = new ArrayList<>();
-        direction = Direction.LEFT;
+        direction = Direction.UP;
+        if (button) {
+            startingPosition.setX(0);
+            startingPosition.setY(19);
+        }
         gameOver = false;
 
         if (button) {
@@ -181,7 +184,7 @@ public class GameViewController implements Initializable {
 
         //Adding start snake parts
         for (int i = 0; i < 3; i++) {
-            snake.add(new Position(width / 2, height / 2));
+            snake.add(new Position(startingPosition.getX(), startingPosition.getY()));
         }
     }
 
@@ -192,49 +195,52 @@ public class GameViewController implements Initializable {
             return;
         }
 
+        System.out.println(snake);
+
         //Get snake size
         snakeSize.snakeSize(snake);
+        startingPosition.setX(snake.get(0).getX());
+        startingPosition.setY(snake.get(0).getY());
 
         //Change direction and check if it hits wall
         switch (direction) {
             case UP:
-                snake.get(0).y--;
-                if (snake.get(0).y < 0) {
+                snake.get(0).setY(snake.get(0).getY() - 1);
+                 if (snake.get(0).getY() < 0) {
                     gameOver = true;
                 }
                 break;
             case DOWN:
-                snake.get(0).y++;
-                if (snake.get(0).y >= height) {
+                snake.get(0).setY(snake.get(0).getY() + 1);
+                if (snake.get(0).getY() >= height) {
                     gameOver = true;
                 }
                 break;
             case LEFT:
-                snake.get(0).x--;
-                if (snake.get(0).x < 0) {
+                snake.get(0).setX(snake.get(0).getX() - 1);
+                if (snake.get(0).getX() < 0) {
                     gameOver = true;
                 }
                 break;
             case RIGHT:
-                snake.get(0).x++;
-                if (snake.get(0).x >= width) {
+                snake.get(0).setX(snake.get(0).getX() + 1);
+                if (snake.get(0).getX() >= width) {
                     gameOver = true;
                 }
                 break;
         }
 
         //Eat food
-        if (food.foodX == snake.get(0).x && food.foodY == snake.get(0).y) {
+        if (food.getFoodX() == snake.get(0).getX() && food.getFoodY() == snake.get(0).getY()) {
             snake.add(new Position(-1, -1));
             newFood();
-            food.score++;
-            System.out.println("Food eaten");
+            food.setScore(food.getScore() + 1);
         }
 
         //Self destroy
         for (int i = 1; i < snake.size(); i++) {
-            if (snake.get(0).x == snake.get(i).x && snake.get(0).y
-                    == snake.get(i).y) {
+            if (snake.get(0).getX() == snake.get(i).getX() && snake.get(0).getY()
+                    == snake.get(i).getY()) {
                 gameOver = true;
             }
         }
@@ -244,12 +250,12 @@ public class GameViewController implements Initializable {
         gc.fillRect(0, 0, width * cornersize, height * cornersize);
 
         //Score     
-        lbScore.setText(String.valueOf(food.score));
+        lbScore.setText(String.valueOf(food.getScore()));
 
         //Random foodColor
         Color cc = Color.WHITE;
 
-        switch (food.foodColor) {
+        switch (food.getFoodColor()) {
             case 0:
                 cc = Color.PURPLE;
                 break;
@@ -267,16 +273,16 @@ public class GameViewController implements Initializable {
                 break;
         }
         gc.setFill(cc);
-        gc.fillOval(food.foodX * cornersize, food.foodY * cornersize, cornersize,
+        gc.fillOval(food.getFoodX() * cornersize, food.getFoodY() * cornersize, cornersize,
                 cornersize);
 
         //Snake color
         for (Position p : snake) {
             gc.setFill(Color.LIGHTGREEN);
-            gc.fillRect(p.x * cornersize, p.y * cornersize, cornersize - 1,
+            gc.fillRect(p.getX() * cornersize, p.getY() * cornersize, cornersize - 1,
                     cornersize - 1);
             gc.setFill(Color.GREEN);
-            gc.fillRect(p.x * cornersize, p.y * cornersize, cornersize - 2,
+            gc.fillRect(p.getX() * cornersize, p.getY() * cornersize, cornersize - 2,
                     cornersize - 2);
         }
     }
@@ -284,18 +290,19 @@ public class GameViewController implements Initializable {
     //Food
     public void newFood() {
         while (true) {
-            food.foodX = rand.nextInt(width);
-            food.foodY = rand.nextInt(height);
-
-            food.foodColor = rand.nextInt(5);
-            speed++;            
+            food.setFoodX(rand.nextInt(width));
+            food.setFoodY(rand.nextInt(height));
+            food.setFoodColor(rand.nextInt(5));
+            speed++;
             break;
         }
     }
 
     private void dataSeriazlization() {
         try {
-            SerializationUtils.write(food, fileName);
+            //SerializationUtils.write(food, fileName);
+            SerializationUtils.write(startingPosition, fileName);
+            System.out.println(startingPosition);
         } catch (IOException ex) {
             Logger.getLogger(GameViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
