@@ -19,6 +19,11 @@
                   <Font name="Mistral" size="36.0" />
                </font>
             </Label>
+            <Label fx:id="lbSaveDocumentation" layoutX="368.0" layoutY="389.0" onMouseClicked="#lbSaveDocumentationClick" prefHeight="56.0" prefWidth="288.0" text="SAVE DOCUMENTATION">
+               <font>
+                  <Font name="Mistral" size="36.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </children>

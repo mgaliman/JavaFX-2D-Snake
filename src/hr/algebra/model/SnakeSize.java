@@ -16,7 +16,31 @@ import java.util.List;
  * @author mgali
  */
 public class SnakeSize implements Serializable {
+    
+    private static final long serialVersionUID = 1L;
+    
+    private int snakeLength;
+    private SnakeDirection direction;
 
+    public int getSnakeLength() {
+        return snakeLength;
+    }
+
+    public void setSnakeLength(int snakeLength) {
+        this.snakeLength = snakeLength;
+    }
+
+    public SnakeDirection getDirection() {
+        return direction;
+    }
+
+    public void setDirection(SnakeDirection direction) {
+        this.direction = direction;
+    }    
+    
+    public SnakeSize() {
+    }        
+    
     public void snakeSize(List<Position> snake) {
         for (int i = snake.size() - 1; i >= 1; i--) {
             snake.get(i).setX(snake.get(i - 1).getX());
@@ -26,11 +50,11 @@ public class SnakeSize implements Serializable {
     
     private void writeObject(ObjectOutputStream oos) throws IOException {
         oos.defaultWriteObject();
-        //oos.writeInt(snakeSize);
+        oos.writeInt(snakeLength);
     }
 
     private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
         ois.defaultReadObject();
-        //snakeSize = ois.readInt();
+        snakeLength = ois.readInt();
     }
 }

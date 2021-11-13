@@ -12,6 +12,6 @@
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="JavaFX-2D Snake" >
     <param name="requiredFXVersion" value="8.0+"/>
   </applet-desc>
-  <jfx:javafx-desc  width="800" height="600" main-class="Game"  name="JavaFX-2D Snake" />
+  <jfx:javafx-desc  width="800" height="600" main-class="hr.algebra.Game"  name="JavaFX-2D Snake" />
   <update check="always"/>
 </jnlp>

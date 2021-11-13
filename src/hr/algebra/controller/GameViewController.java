@@ -5,9 +5,10 @@
  */
 package hr.algebra.controller;
 
-import com.sun.javafx.scene.traversal.Direction;
 import hr.algebra.model.Position;
 import hr.algebra.model.Food;
+import hr.algebra.model.GameObjects;
+import hr.algebra.model.SnakeDirection;
 import hr.algebra.model.SnakeSize;
 import hr.algebra.utilities.SerializationUtils;
 import java.io.IOException;
@@ -50,10 +51,10 @@ public class GameViewController implements Initializable {
     static int cornersize;
     static List<Position> snake = new ArrayList<>();
     static Position startingPosition = new Position();
-    static Direction direction = Direction.LEFT;
     static boolean gameOver = false;
     static Random rand = new Random();
     SnakeSize snakeSize = new SnakeSize();
+    GameObjects gameObjects = new GameObjects();
 
     //@FXML is used for getting variables from fxml
     @FXML
@@ -100,9 +101,14 @@ public class GameViewController implements Initializable {
 
     @FXML
     private void btnLoadClick(MouseEvent event) {
+        lbGameResult.setText("\tGame is running!");
         try {
-            //food = (Food)SerializationUtils.read(fileName);
-            startingPosition = (Position) SerializationUtils.read(fileName);
+            gameObjects = (GameObjects) SerializationUtils.read(fileName);
+
+            food = gameObjects.getFood();
+            startingPosition = gameObjects.getPosition();
+            snakeSize = gameObjects.getSnakeSize();
+
             init(false);
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(GameViewController.class.getName()).log(Level.SEVERE, null, ex);
@@ -125,14 +131,14 @@ public class GameViewController implements Initializable {
         height = 20;
         cornersize = 25;
         snake = new ArrayList<>();
-        direction = Direction.UP;
-        if (button) {
-            startingPosition.setX(0);
-            startingPosition.setY(19);
-        }
         gameOver = false;
 
         if (button) {
+            startingPosition.setX(0);
+            startingPosition.setY(19);
+            snakeSize.setSnakeLength(3);
+            snakeSize.setDirection(SnakeDirection.UP);
+
             //Food for snake 
             newFood();
         }
@@ -169,21 +175,21 @@ public class GameViewController implements Initializable {
         //Snake control
         apGameWindow.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
             if (key.getCode() == KeyCode.W) {
-                direction = Direction.UP;
+                snakeSize.setDirection(SnakeDirection.UP);
             }
             if (key.getCode() == KeyCode.A) {
-                direction = Direction.LEFT;
+                snakeSize.setDirection(SnakeDirection.LEFT);
             }
             if (key.getCode() == KeyCode.S) {
-                direction = Direction.DOWN;
+                snakeSize.setDirection(SnakeDirection.DOWN);
             }
             if (key.getCode() == KeyCode.D) {
-                direction = Direction.RIGHT;
+                snakeSize.setDirection(SnakeDirection.RIGHT);
             }
         });
 
         //Adding start snake parts
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < snakeSize.getSnakeLength(); i++) {
             snake.add(new Position(startingPosition.getX(), startingPosition.getY()));
         }
     }
@@ -203,10 +209,10 @@ public class GameViewController implements Initializable {
         startingPosition.setY(snake.get(0).getY());
 
         //Change direction and check if it hits wall
-        switch (direction) {
+        switch (snakeSize.getDirection()) {
             case UP:
                 snake.get(0).setY(snake.get(0).getY() - 1);
-                 if (snake.get(0).getY() < 0) {
+                if (snake.get(0).getY() < 0) {
                     gameOver = true;
                 }
                 break;
@@ -233,6 +239,7 @@ public class GameViewController implements Initializable {
         //Eat food
         if (food.getFoodX() == snake.get(0).getX() && food.getFoodY() == snake.get(0).getY()) {
             snake.add(new Position(-1, -1));
+            snakeSize.setSnakeLength(snakeSize.getSnakeLength() + 1);
             newFood();
             food.setScore(food.getScore() + 1);
         }
@@ -300,9 +307,8 @@ public class GameViewController implements Initializable {
 
     private void dataSeriazlization() {
         try {
-            //SerializationUtils.write(food, fileName);
-            SerializationUtils.write(startingPosition, fileName);
-            System.out.println(startingPosition);
+            gameObjects = new GameObjects(food, startingPosition, snakeSize);
+            SerializationUtils.write(gameObjects, fileName);
         } catch (IOException ex) {
             Logger.getLogger(GameViewController.class.getName()).log(Level.SEVERE, null, ex);
         }

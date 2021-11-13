@@ -1,3 +1,5 @@
+package hr.algebra;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,7 +16,7 @@ public class Game extends Application {
         mainStage = stage;
         
         Parent root = FXMLLoader.load(getClass().getResource(
-                "hr/algebra/view/MainMenuView.fxml"));
+                "view/MainMenuView.fxml"));
         
         Scene scene = new Scene(root);
         
