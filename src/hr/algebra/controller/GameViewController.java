@@ -5,14 +5,33 @@
  */
 package hr.algebra.controller;
 
+import hr.algebra.model.ChatMessage;
 import hr.algebra.model.Position;
 import hr.algebra.model.Food;
 import hr.algebra.model.GameObjects;
+import hr.algebra.model.JNDIInfo;
 import hr.algebra.model.SnakeDirection;
 import hr.algebra.model.SnakeSize;
+import hr.algebra.model.networking.MessengerService;
+import hr.algebra.model.networking.MessengerServiceImpl;
+import hr.algebra.model.networking.Server;
+import hr.algebra.threads.TimerThread;
+import hr.algebra.utilities.JndiUtils;
 import hr.algebra.utilities.SerializationUtils;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.net.Socket;
 import java.net.URL;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -28,6 +47,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -56,6 +76,17 @@ public class GameViewController implements Initializable {
     SnakeSize snakeSize = new SnakeSize();
     GameObjects gameObjects = new GameObjects();
 
+    //Networking
+    private Socket clientSocket;
+    private Server serverThread;
+    private boolean isHost;
+    private MessengerService stub;
+    private MessengerService messengerService;
+    private JNDIInfo configurationInfo;
+    private OutputStream os;
+    private PrintStream printStream;
+    private BufferedReader in;
+
     //@FXML is used for getting variables from fxml
     @FXML
     private Canvas cnGamePlatform;
@@ -79,13 +110,27 @@ public class GameViewController implements Initializable {
     private Button btnLoad;
     @FXML
     private Button btnSave;
+    @FXML
+    public TextArea taChat;
+    @FXML
+    private Label lbTimer;
+    @FXML
+    public TextArea taInput;
+    @FXML
+    private Button btnSend;
+    @FXML
+    private Button btnHost;
+    @FXML
+    private Button btnConnect;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        new TimerThread(lbTimer).start();
         lbGameResult.setText("\tPress Start!");
+        configurationInfo = JndiUtils.getConfigurationInfo();
     }
 
     @FXML
@@ -123,6 +168,88 @@ public class GameViewController implements Initializable {
         spGame.getChildren().add(root);
 
         spGame.getChildren().remove(apGameWindow);
+    }
+
+    @FXML
+    private void btnSendClick(MouseEvent event) {
+        try {
+            LocalDateTime currentTime = LocalDateTime.now();
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            ChatMessage chatMessage = new ChatMessage("Player", taInput.getText().trim(), dateTimeFormatter.format(currentTime));
+            stub.sendMessage(chatMessage);
+            if (!isHost) {
+                List<ChatMessage> messageList = stub.getAllMessages();;
+                StringBuilder sb = new StringBuilder();
+                messageList.forEach((msg) -> {
+                    sb.append(msg)
+                            .append(System.getProperty("line.separator"))
+                            .append(System.getProperty("line.separator"));
+                });
+
+                taChat.setText(sb.toString());
+                taInput.clear();
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(GameViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void btnHostClick(MouseEvent event) {
+        try {
+            messengerService = new MessengerServiceImpl(this);
+            stub = (MessengerService) UnicastRemoteObject
+                    .exportObject((MessengerService) messengerService, 0);
+            Registry registry = LocateRegistry.createRegistry(Integer.parseInt(configurationInfo.getRegistry()));
+            registry.rebind("MessengerService", stub);
+            
+            isHost = true;
+            serverThread = new Server(this);
+            serverThread.setDaemon(true);
+            serverThread.start();
+        } catch (RemoteException ex) {
+            Logger.getLogger(GameViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void btnConnectClick(MouseEvent event) throws IOException {
+        try {
+            messengerService = new MessengerServiceImpl(this);
+            Registry registry = LocateRegistry.getRegistry();
+            stub = (MessengerService) registry
+                    .lookup("MessengerService");
+
+            isHost = false;
+            clientSocket = new Socket(configurationInfo.getName(), Integer.parseInt(configurationInfo.getPort()));
+            System.out.println(clientSocket);
+
+            Thread clientThread = new Thread(() -> {
+                try {
+                    os = clientSocket.getOutputStream();
+                    printStream = new PrintStream(os);
+
+                    btnConnect.setDisable(true);
+                    taInput.setDisable(false);
+
+                    System.out.println("Poruka je poslana serveru;");
+
+                    System.out.println("Primam poruku od servera");
+                    String greeting = "";
+
+                    in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                    while ((greeting = in.readLine()) != null) {
+                        System.out.println("Pročitao sam poruku: " + greeting);
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(GameViewController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+            clientThread.setDaemon(true);
+            clientThread.start();
+        } catch (RemoteException | NotBoundException ex) {
+            Logger.getLogger(GameViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void init(boolean button) {

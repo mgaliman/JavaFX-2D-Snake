@@ -8,13 +8,13 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="spGame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760.0" prefWidth="1020.0" style="-fx-background-color: green;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.algebra.controller.GameViewController">
+<StackPane fx:id="spGame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760.0" prefWidth="1020.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.algebra.controller.GameViewController">
    <children>
-      <AnchorPane id="AnchorPane" fx:id="apGameWindow" prefHeight="768.0" prefWidth="1024.0" style="-fx-background-color: green;">
+      <AnchorPane id="AnchorPane" fx:id="apGameWindow" prefHeight="768.0" prefWidth="1024.0">
          <children>
-            <Button fx:id="btnStart" layoutX="595.0" layoutY="498.0" mnemonicParsing="false" onMouseClicked="#btnStartClick" prefHeight="77.0" prefWidth="198.0" text="START">
+            <Button fx:id="btnStart" layoutX="611.0" layoutY="494.0" mnemonicParsing="false" onMouseClicked="#btnStartClick" prefHeight="31.0" prefWidth="166.0" text="START">
                <font>
-                  <Font name="Mistral" size="53.0" />
+                  <Font name="Mistral" size="35.0" />
                </font>
             </Button>
             <Label layoutX="719.0" layoutY="39.0" prefHeight="44.0" prefWidth="81.0" text="SCORE">
@@ -58,20 +58,46 @@
                   <Font name="Mistral" size="35.0" />
                </font>
             </Label>
-            <TextArea layoutX="23.0" layoutY="580.0" prefHeight="169.0" prefWidth="536.0" text="P1: CONNECTED&#10;P2: CONNECTED&#10;P1: Hello!&#10;P2: Hey!&#10;P1: How are you?&#10;P2: Great, you?&#10;P1: Also great.&#10;P2: Great.&#10;P1: ...&#10;P2: ..." />
-            <Button fx:id="btnMainMenu" layoutX="595.0" layoutY="614.0" mnemonicParsing="false" onMouseClicked="#btnMainMenuClick" prefHeight="85.0" prefWidth="198.0" text="MENU">
+            <TextArea fx:id="taChat" layoutX="23.0" layoutY="580.0" prefHeight="135.0" prefWidth="510.0" />
+            <Button fx:id="btnMainMenu" layoutX="791.0" layoutY="494.0" mnemonicParsing="false" onMouseClicked="#btnMainMenuClick" prefHeight="31.0" prefWidth="166.0" text="MENU">
                <font>
-                  <Font name="Mistral" size="53.0" />
+                  <Font name="Mistral" size="35.0" />
                </font>
             </Button>
-            <Button fx:id="btnLoad" layoutX="800.0" layoutY="498.0" mnemonicParsing="false" onMouseClicked="#btnLoadClick" prefHeight="77.0" prefWidth="198.0" text="LOAD">
+            <Button fx:id="btnLoad" layoutX="611.0" layoutY="577.0" mnemonicParsing="false" onMouseClicked="#btnLoadClick" prefHeight="31.0" prefWidth="166.0" text="LOAD">
                <font>
-                  <Font name="Mistral" size="53.0" />
+                  <Font name="Mistral" size="35.0" />
                </font>
             </Button>
-            <Button fx:id="btnSave" layoutX="800.0" layoutY="614.0" mnemonicParsing="false" onMouseClicked="#btnSaveClick" prefHeight="85.0" prefWidth="198.0" text="SAVE">
+            <Button fx:id="btnSave" layoutX="791.0" layoutY="577.0" mnemonicParsing="false" onMouseClicked="#btnSaveClick" prefHeight="31.0" prefWidth="166.0" text="SAVE">
                <font>
-                  <Font name="Mistral" size="53.0" />
+                  <Font name="Mistral" size="35.0" />
+               </font>
+            </Button>
+            <Label layoutX="343.0" layoutY="530.0" prefHeight="50.0" prefWidth="81.0" text="TIMER">
+               <font>
+                  <Font name="Mistral" size="40.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbTimer" layoutX="434.0" layoutY="533.0" prefHeight="44.0" prefWidth="100.0" text="-">
+               <font>
+                  <Font name="Mistral" size="35.0" />
+               </font>
+            </Label>
+            <TextArea fx:id="taInput" layoutX="23.0" layoutY="715.0" prefHeight="0.0" prefWidth="411.0" promptText="Writte a message..." />
+            <Button fx:id="btnSend" layoutX="434.0" layoutY="715.0" mnemonicParsing="false" onMouseClicked="#btnSendClick" prefHeight="38.0" prefWidth="100.0" text="SEND">
+               <font>
+                  <Font name="Mistral" size="15.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnHost" layoutX="611.0" layoutY="659.0" mnemonicParsing="false" onMouseClicked="#btnHostClick" prefHeight="31.0" prefWidth="166.0" text="HOST">
+               <font>
+                  <Font name="Mistral" size="35.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnConnect" layoutX="787.0" layoutY="659.0" mnemonicParsing="false" onMouseClicked="#btnConnectClick" prefHeight="31.0" prefWidth="166.0" text="CONNECT">
+               <font>
+                  <Font name="Mistral" size="35.0" />
                </font>
             </Button>
          </children>
