@@ -58,7 +58,7 @@
                   <Font name="Mistral" size="35.0" />
                </font>
             </Label>
-            <TextArea fx:id="taChat" layoutX="23.0" layoutY="580.0" prefHeight="135.0" prefWidth="510.0" />
+            <TextArea fx:id="taChat" editable="false" layoutX="23.0" layoutY="580.0" prefHeight="135.0" prefWidth="510.0" />
             <Button fx:id="btnMainMenu" layoutX="791.0" layoutY="494.0" mnemonicParsing="false" onMouseClicked="#btnMainMenuClick" prefHeight="31.0" prefWidth="166.0" text="MENU">
                <font>
                   <Font name="Mistral" size="35.0" />
@@ -74,12 +74,7 @@
                   <Font name="Mistral" size="35.0" />
                </font>
             </Button>
-            <Label layoutX="343.0" layoutY="530.0" prefHeight="50.0" prefWidth="81.0" text="TIMER">
-               <font>
-                  <Font name="Mistral" size="40.0" />
-               </font>
-            </Label>
-            <Label fx:id="lbTimer" layoutX="434.0" layoutY="533.0" prefHeight="44.0" prefWidth="100.0" text="-">
+            <Label fx:id="lbTimer" layoutX="416.0" layoutY="533.0" prefHeight="44.0" prefWidth="118.0" text="00:00:00">
                <font>
                   <Font name="Mistral" size="35.0" />
                </font>

@@ -45,6 +45,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -131,11 +133,14 @@ public class GameViewController implements Initializable {
         new TimerThread(lbTimer).start();
         lbGameResult.setText("\tPress Start!");
         configurationInfo = JndiUtils.getConfigurationInfo();
+        taInput.setDisable(true);
+        btnSend.setDisable(true);
     }
 
     @FXML
     public void btnStartClick() {
         lbGameResult.setText("\tGame is running!");
+        btnStart.setDisable(true);
         init(true);
     }
 
@@ -204,10 +209,19 @@ public class GameViewController implements Initializable {
             registry.rebind("MessengerService", stub);
             
             isHost = true;
+            btnHost.setDisable(true);
+            btnConnect.setDisable(true);
+            taInput.setDisable(false);
+            btnSend.setDisable(false);
+            
             serverThread = new Server(this);
             serverThread.setDaemon(true);
             serverThread.start();
         } catch (RemoteException ex) {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText("Port already used!");
+            alert.showAndWait();
             Logger.getLogger(GameViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -230,7 +244,9 @@ public class GameViewController implements Initializable {
                     printStream = new PrintStream(os);
 
                     btnConnect.setDisable(true);
+                    btnHost.setDisable(true);
                     taInput.setDisable(false);
+                    btnSend.setDisable(false);
 
                     System.out.println("Poruka je poslana serveru;");
 
@@ -248,7 +264,11 @@ public class GameViewController implements Initializable {
             clientThread.setDaemon(true);
             clientThread.start();
         } catch (RemoteException | NotBoundException ex) {
-            Logger.getLogger(GameViewController.class.getName()).log(Level.SEVERE, null, ex);
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText("There is no host to connect to!");
+            alert.showAndWait();
+            Logger.getLogger(GameViewController.class.getName()).log(Level.SEVERE, null, ex);            
         }
     }
 
