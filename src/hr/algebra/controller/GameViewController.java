@@ -248,14 +248,14 @@ public class GameViewController implements Initializable {
                     taInput.setDisable(false);
                     btnSend.setDisable(false);
 
-                    System.out.println("Poruka je poslana serveru;");
+                    System.out.println("The message was sent to the server!");
 
-                    System.out.println("Primam poruku od servera");
+                    System.out.println("I'm receiving a message from the server!");
                     String greeting = "";
 
                     in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                     while ((greeting = in.readLine()) != null) {
-                        System.out.println("Pročitao sam poruku: " + greeting);
+                        System.out.println("I read the message: " + greeting);
                     }
                 } catch (IOException ex) {
                     Logger.getLogger(GameViewController.class.getName()).log(Level.SEVERE, null, ex);

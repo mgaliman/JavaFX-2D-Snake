@@ -47,26 +47,26 @@ public class Server extends Thread{
         JNDIInfo configurationInfo = JndiUtils.getConfigurationInfo();
         try {
             serverSocket = new ServerSocket(Integer.parseInt(configurationInfo.getPort()));
-            System.out.println("Uspješno se kreirao server socket!");
+            System.out.println("The server socket was successfully created!");
             while (numOfPlayers < 1) {
                 clientSocket = serverSocket.accept();
                 System.out.println(clientSocket);
                 controller.taChat.setText(PLAYER_JOINED);
                 numOfPlayers++;
-                System.out.println("Prihvaćena je konekcija!");
+                System.out.println("Connection accepted!");
             }
-            System.out.println("2 igraca su u igri. Ulazak igraca vise nije dopusten");
+            System.out.println("2 players are in the game. Player entry is no longer allowed!");
             
             while (true) {
                 objectWriter = new ObjectOutputStream(clientSocket.getOutputStream());
-                System.out.println("Uspješno se uspostavila vezan s klijentom!");
+                System.out.println("The connection with the client is successfully established!");
                 in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                System.out.println("Spojio sam se na klijenta!");
+                System.out.println("I connected to the client!");
                 out = new PrintWriter(clientSocket.getOutputStream(), true);
                 
                 String greeting = "";
                 while ((greeting = in.readLine()) != null) {
-                    System.out.println("Pročitao sam poruku: " + greeting);
+                    System.out.println("I read the message: " + greeting);
                 }
             }
         } catch (IOException ex) {
