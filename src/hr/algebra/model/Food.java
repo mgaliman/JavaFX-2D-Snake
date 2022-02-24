@@ -57,6 +57,11 @@ public class Food implements Serializable {
     
     public Food() {
     }
+
+    @Override
+    public String toString() {
+        return foodColor + "," + foodX + "," + foodY + "," + score;
+    }
     
     private void writeObject(ObjectOutputStream oos) throws IOException {
         oos.defaultWriteObject();
@@ -65,7 +70,7 @@ public class Food implements Serializable {
         oos.writeInt(getFoodY());
         oos.writeInt(getScore());
     }
-
+    
     private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
         ois.defaultReadObject();
         setFoodColor(ois.readInt());

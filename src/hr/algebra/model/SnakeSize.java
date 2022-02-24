@@ -40,6 +40,11 @@ public class SnakeSize implements Serializable {
     
     public SnakeSize() {
     }        
+
+    @Override
+    public String toString() {
+        return snakeLength + "," + direction;
+    }
     
     public void snakeSize(List<Position> snake) {
         for (int i = snake.size() - 1; i >= 1; i--) {

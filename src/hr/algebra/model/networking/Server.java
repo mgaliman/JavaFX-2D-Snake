@@ -6,6 +6,7 @@
 package hr.algebra.model.networking;
 
 import hr.algebra.controller.GameViewController;
+import hr.algebra.model.GameObjects;
 import hr.algebra.model.JNDIInfo;
 import hr.algebra.utilities.JndiUtils;
 import java.io.BufferedReader;
@@ -22,7 +23,8 @@ import java.util.logging.Logger;
  *
  * @author mgali
  */
-public class Server extends Thread{
+public class Server extends Thread {
+
     private ServerSocket serverSocket;
     private Socket clientSocket;
     private PrintWriter out;
@@ -31,14 +33,14 @@ public class Server extends Thread{
     private static final String PLAYER_JOINED = "Player joined!";
 
     private int numOfPlayers = 0;
-    
+
     private final GameViewController controller;
 
     public Server(GameViewController controller) {
         this.controller = controller;
     }
-    
-    public Socket getClientSocket(){
+
+    public Socket getClientSocket() {
         return clientSocket;
     }
 
@@ -56,14 +58,17 @@ public class Server extends Thread{
                 System.out.println("Connection accepted!");
             }
             System.out.println("2 players are in the game. Player entry is no longer allowed!");
-            
+
             while (true) {
                 objectWriter = new ObjectOutputStream(clientSocket.getOutputStream());
                 System.out.println("The connection with the client is successfully established!");
                 in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 System.out.println("I connected to the client!");
                 out = new PrintWriter(clientSocket.getOutputStream(), true);
-                
+
+                GameObjects gameObjects = GameObjects.getInstance();
+                out.println(gameObjects);
+
                 String greeting = "";
                 while ((greeting = in.readLine()) != null) {
                     System.out.println("I read the message: " + greeting);

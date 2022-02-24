@@ -17,12 +17,14 @@ import hr.algebra.model.networking.MessengerServiceImpl;
 import hr.algebra.model.networking.Server;
 import hr.algebra.threads.TimerThread;
 import hr.algebra.utilities.JndiUtils;
+import hr.algebra.utilities.ParserUtils;
 import hr.algebra.utilities.SerializationUtils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
 import java.rmi.NotBoundException;
@@ -69,15 +71,21 @@ public class GameViewController implements Initializable {
     static int speed;
     static int width;
     static int height;
+
     static Food food = new Food();
+
     static int cornersize;
-    static List<Position> snake = new ArrayList<>();
+    static List<Position> snake = new ArrayList<>(); // Current Snake Position
+
     static Position startingPosition = new Position();
+
     static boolean gameOver = false;
     static Random rand = new Random();
-    SnakeSize snakeSize = new SnakeSize();
-    GameObjects gameObjects = new GameObjects();
 
+    SnakeSize snakeSize = new SnakeSize();
+    SnakeSize snakeSizeTwo = new SnakeSize();
+
+    //GameObjects gameObjects = new GameObjects();
     //Networking
     private Socket clientSocket;
     private Server serverThread;
@@ -88,6 +96,7 @@ public class GameViewController implements Initializable {
     private OutputStream os;
     private PrintStream printStream;
     private BufferedReader in;
+    private PrintWriter out;
 
     //@FXML is used for getting variables from fxml
     @FXML
@@ -152,17 +161,15 @@ public class GameViewController implements Initializable {
     @FXML
     private void btnLoadClick(MouseEvent event) {
         lbGameResult.setText("\tGame is running!");
-        try {
-            gameObjects = (GameObjects) SerializationUtils.read(fileName);
+        //gameObjects = (GameObjects) SerializationUtils.read(fileName);
+        GameObjects.getInstance().setFood(food);
+        GameObjects.getInstance().setPosition(startingPosition);
+        GameObjects.getInstance().setSnakeSize(snakeSize);
+        //food = gameObjects.getFood();
+        //startingPosition = gameObjects.getPosition();
+        //snakeSize = gameObjects.getSnakeSize();
 
-            food = gameObjects.getFood();
-            startingPosition = gameObjects.getPosition();
-            snakeSize = gameObjects.getSnakeSize();
-
-            init(false);
-        } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(GameViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        init(false);
     }
 
     @FXML
@@ -207,13 +214,13 @@ public class GameViewController implements Initializable {
                     .exportObject((MessengerService) messengerService, 0);
             Registry registry = LocateRegistry.createRegistry(Integer.parseInt(configurationInfo.getRegistry()));
             registry.rebind("MessengerService", stub);
-            
+
             isHost = true;
             btnHost.setDisable(true);
             btnConnect.setDisable(true);
             taInput.setDisable(false);
             btnSend.setDisable(false);
-            
+
             serverThread = new Server(this);
             serverThread.setDaemon(true);
             serverThread.start();
@@ -252,32 +259,40 @@ public class GameViewController implements Initializable {
 
                     System.out.println("I'm receiving a message from the server!");
                     String greeting = "";
-
                     in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                    String deleteLine = in.readLine();
                     while ((greeting = in.readLine()) != null) {
                         System.out.println("I read the message: " + greeting);
+                        ParserUtils.parseMessage(greeting);
+                        //Drawing on canvas
+                        GraphicsContext gc = cnGamePlatform.getGraphicsContext2D();
+                        //Ispisi na drugi monitor...
                     }
                 } catch (IOException ex) {
                     Logger.getLogger(GameViewController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            });
-            clientThread.setDaemon(true);
-            clientThread.start();
-        } catch (RemoteException | NotBoundException ex) {
+                });
+                clientThread.setDaemon(true);
+                clientThread.start();
+            } catch (RemoteException | NotBoundException ex) {
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Information Dialog");
             alert.setHeaderText("There is no host to connect to!");
             alert.showAndWait();
-            Logger.getLogger(GameViewController.class.getName()).log(Level.SEVERE, null, ex);            
+            Logger.getLogger(GameViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
+        }
+
+    
 
     private void init(boolean button) {
-        speed = 5;
+
+        speed = 1;
         width = 20;
         height = 20;
         cornersize = 25;
-        snake = new ArrayList<>();
+        snake = new ArrayList<>(); //Current Snake Position
+
         gameOver = false;
 
         if (button) {
@@ -347,8 +362,6 @@ public class GameViewController implements Initializable {
             lbGameResult.setText("\tGAME OVER\n To continue press start!");
             return;
         }
-
-        System.out.println(snake);
 
         //Get snake size
         snakeSize.snakeSize(snake);
@@ -439,6 +452,8 @@ public class GameViewController implements Initializable {
             gc.fillRect(p.getX() * cornersize, p.getY() * cornersize, cornersize - 2,
                     cornersize - 2);
         }
+
+        sendObjects();
     }
 
     //Food
@@ -452,12 +467,43 @@ public class GameViewController implements Initializable {
         }
     }
 
+    private void sendObjects() {
+        GameObjects.getInstance().getFood();
+        GameObjects.getInstance().getPosition();
+        GameObjects.getInstance().getSnakeSize();
+
+        GameObjects.getInstance().setFood(food);
+        GameObjects.getInstance().setPosition(startingPosition);
+        GameObjects.getInstance().setSnakeSize(snakeSize);
+
+        if (isHost) {
+            new Thread(() -> {
+                try {
+                    clientSocket = serverThread.getClientSocket();
+                    out = new PrintWriter(clientSocket.getOutputStream(), true);
+
+                    out.println(GameObjects.getInstance());
+                    System.out.println(GameObjects.getInstance() + " - " + clientSocket);
+                } catch (IOException ex) {
+                    Logger.getLogger(GameViewController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }).start();
+        }
+    }
+
     private void dataSeriazlization() {
         try {
-            gameObjects = new GameObjects(food, startingPosition, snakeSize);
-            SerializationUtils.write(gameObjects, fileName);
+            //gameObjects = new GameObjects(food, startingPosition, snakeSize);
+            GameObjects.getInstance().getFood();
+            GameObjects.getInstance().getPosition();
+            GameObjects.getInstance().getSnakeSize();
+
+            SerializationUtils.write(GameObjects.getInstance().getFood(), fileName);
+
         } catch (IOException ex) {
-            Logger.getLogger(GameViewController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GameViewController.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

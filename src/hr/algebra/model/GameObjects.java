@@ -43,14 +43,19 @@ public class GameObjects implements Serializable{
         this.snakeSize = snakeSize;
     }
 
-    public GameObjects() {
+    private GameObjects() {
     }    
     
-    public GameObjects(Food food, Position position, SnakeSize snakeSize) {
-        this.food = food;
-        this.position = position;
-        this.snakeSize = snakeSize;
+    private static final GameObjects INSTANCE = new GameObjects();
+
+    public static GameObjects getInstance() {
+        return INSTANCE;
     }
 
-     
+    @Override
+    public String toString() {
+        return food + "," + position + "," + snakeSize;
+    }
+    
+    
 }
