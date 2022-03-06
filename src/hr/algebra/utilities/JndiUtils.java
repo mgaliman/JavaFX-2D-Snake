@@ -63,7 +63,7 @@ public class JndiUtils {
                     .get();
 
             Properties appProps = new Properties();
-            appProps.load(new FileInputStream(FILE_LOCATION + "\\"
+            appProps.load(new FileInputStream(FILE_LOCATION + "/"
                     + foundFile));
 
             info.setPort(appProps.getProperty(SERVER_PORT));
