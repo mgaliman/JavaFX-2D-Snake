@@ -12,17 +12,12 @@
    <children>
       <AnchorPane id="AnchorPane" fx:id="apGameWindow" prefHeight="768.0" prefWidth="1024.0">
          <children>
-            <Button fx:id="btnStart" layoutX="611.0" layoutY="494.0" mnemonicParsing="false" onMouseClicked="#btnStartClick" prefHeight="31.0" prefWidth="166.0" text="START">
+            <Button fx:id="btnStart" layoutX="610.0" layoutY="580.0" mnemonicParsing="false" onMouseClicked="#btnStartClick" prefHeight="31.0" prefWidth="166.0" text="START">
                <font>
                   <Font name="Mistral" size="35.0" />
                </font>
             </Button>
-            <Label layoutX="719.0" layoutY="39.0" prefHeight="44.0" prefWidth="81.0" text="SCORE">
-               <font>
-                  <Font name="Mistral" size="35.0" />
-               </font>
-            </Label>
-            <Label fx:id="lbScore" layoutX="813.0" layoutY="39.0" prefHeight="44.0" prefWidth="49.0" text="-">
+            <Label layoutX="727.0" layoutY="44.0" prefHeight="44.0" prefWidth="81.0" text="SCORE">
                <font>
                   <Font name="Mistral" size="35.0" />
                </font>
@@ -38,7 +33,7 @@
                   <Font name="Mistral" size="40.0" />
                </font>
             </Label>
-            <Label layoutX="669.0" layoutY="118.0" prefHeight="44.0" prefWidth="49.0" text="P 1">
+            <Label layoutX="669.0" layoutY="118.0" prefHeight="44.0" prefWidth="49.0" text="P 1:">
                <font>
                   <Font name="Mistral" size="35.0" />
                </font>
@@ -48,7 +43,7 @@
                   <Font name="Mistral" size="35.0" />
                </font>
             </Label>
-            <Label layoutX="800.0" layoutY="118.0" prefHeight="44.0" prefWidth="49.0" text="P 2">
+            <Label layoutX="800.0" layoutY="118.0" prefHeight="44.0" prefWidth="49.0" text="P 2:">
                <font>
                   <Font name="Mistral" size="35.0" />
                </font>
@@ -59,17 +54,7 @@
                </font>
             </Label>
             <TextArea fx:id="taChat" editable="false" layoutX="23.0" layoutY="580.0" prefHeight="135.0" prefWidth="510.0" />
-            <Button fx:id="btnMainMenu" layoutX="791.0" layoutY="494.0" mnemonicParsing="false" onMouseClicked="#btnMainMenuClick" prefHeight="31.0" prefWidth="166.0" text="MENU">
-               <font>
-                  <Font name="Mistral" size="35.0" />
-               </font>
-            </Button>
-            <Button fx:id="btnLoad" layoutX="611.0" layoutY="577.0" mnemonicParsing="false" onMouseClicked="#btnLoadClick" prefHeight="31.0" prefWidth="166.0" text="LOAD">
-               <font>
-                  <Font name="Mistral" size="35.0" />
-               </font>
-            </Button>
-            <Button fx:id="btnSave" layoutX="791.0" layoutY="577.0" mnemonicParsing="false" onMouseClicked="#btnSaveClick" prefHeight="31.0" prefWidth="166.0" text="SAVE">
+            <Button fx:id="btnMainMenu" layoutX="790.0" layoutY="580.0" mnemonicParsing="false" onMouseClicked="#btnMainMenuClick" prefHeight="68.0" prefWidth="166.0" text="MENU">
                <font>
                   <Font name="Mistral" size="35.0" />
                </font>
@@ -90,7 +75,7 @@
                   <Font name="Mistral" size="35.0" />
                </font>
             </Button>
-            <Button fx:id="btnConnect" layoutX="787.0" layoutY="659.0" mnemonicParsing="false" onMouseClicked="#btnConnectClick" prefHeight="31.0" prefWidth="166.0" text="CONNECT">
+            <Button fx:id="btnConnect" layoutX="790.0" layoutY="659.0" mnemonicParsing="false" onMouseClicked="#btnConnectClick" prefHeight="31.0" prefWidth="166.0" text="CONNECT">
                <font>
                   <Font name="Mistral" size="35.0" />
                </font>
