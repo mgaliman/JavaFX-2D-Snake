@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><Snake><Position><x>0</x><y>8</y></Position><Food><color>3</color><foodX>12</foodX><foodY>8</foodY></Food><Score>1</Score><Length>4</Length><Direction>LEFT</Direction></Snake>

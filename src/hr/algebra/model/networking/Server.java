@@ -5,10 +5,6 @@
  */
 package hr.algebra.model.networking;
 
-import hr.algebra.controller.GameViewController;
-import hr.algebra.model.GameObjects;
-import hr.algebra.model.JNDIInfo;
-import hr.algebra.utilities.JndiUtils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,22 +15,35 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import hr.algebra.controller.GameViewController;
+import hr.algebra.model.GameObjects;
+import hr.algebra.model.JNDIInfo;
+import hr.algebra.model.Position;
+import hr.algebra.utilities.JndiUtils;
+import javafx.application.Platform;
+
+import static hr.algebra.controller.GameViewController.clientSnake;
+import static hr.algebra.controller.GameViewController.clientSnakeSize;
+import static hr.algebra.controller.GameViewController.clientStartingPosition;
+import static hr.algebra.controller.GameViewController.food;
+import static hr.algebra.controller.GameViewController.serverSnake;
+import static hr.algebra.controller.GameViewController.serverSnakeSize;
+import static hr.algebra.controller.GameViewController.serverStartingPosition;
+
 /**
  *
  * @author mgali
  */
 public class Server extends Thread {
 
+    private static final String PLAYER_JOINED = "Player joined!";
+    private final GameViewController controller;
     private ServerSocket serverSocket;
     private Socket clientSocket;
     private PrintWriter out;
     private ObjectOutputStream objectWriter;
     private BufferedReader in;
-    private static final String PLAYER_JOINED = "Player joined!";
-
     private int numOfPlayers = 0;
-
-    private final GameViewController controller;
 
     public Server(GameViewController controller) {
         this.controller = controller;
@@ -70,12 +79,33 @@ public class Server extends Thread {
                 out.println(gameObjects);
 
                 String greeting = "";
+                String deleteLine = in.readLine();
                 while ((greeting = in.readLine()) != null) {
                     System.out.println("I read the message: " + greeting);
+                    //Ispisi na drugi monitor...
+                    Platform.runLater(() -> {
+
+                        clientSnakeSize.setSnakeLength(GameObjects.getInstance().getSnakeSize().getSnakeLength());
+                        clientStartingPosition.setX(GameObjects.getInstance().getPosition().getX());
+                        clientStartingPosition.setY(GameObjects.getInstance().getPosition().getY());
+
+                        for (int i = 0; i < clientSnakeSize.getSnakeLength(); i++) {
+                            clientSnake.add(new Position(clientStartingPosition.getX(), clientStartingPosition.getY()));
+                        }
+
+                        //food.setFoodX(GameObjects.getInstance().getFood().getFoodX());
+                        //food.setFoodY(GameObjects.getInstance().getFood().getFoodY());
+                        //food.setFoodColor(GameObjects.getInstance().getFood().getFoodColor());
+
+                        //System.out.println(
+                        //  "ServerSnake" + serverSnake + "SnakeSize" + serverSnakeSize.getSnakeLength() + "Food" + food + "Position" + serverStartingPosition);
+                        //lbScore1.setText(String.valueOf(GameObjects.getInstance().getFood().getScore()));
+                    });
                 }
             }
         } catch (IOException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
 }
