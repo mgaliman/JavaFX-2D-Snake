@@ -7,10 +7,6 @@ package hr.algebra.model;
 
 import java.io.Serializable;
 
-/**
- *
- * @author mgali
- */
 public class GameObjects implements Serializable{
     
     private static final long serialVersionUID = 1L;

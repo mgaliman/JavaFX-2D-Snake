@@ -53,6 +53,8 @@ import hr.algebra.model.SnakeSize;
 import hr.algebra.model.networking.MessengerService;
 import hr.algebra.model.networking.MessengerServiceImpl;
 import hr.algebra.model.networking.Server;
+import hr.algebra.threads.LoadingThread;
+import hr.algebra.threads.SavingThread;
 import hr.algebra.threads.TimerThread;
 import hr.algebra.utilities.JndiUtils;
 import hr.algebra.utilities.ParserUtils;
@@ -77,11 +79,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
-/**
- * FXML Controller class
- *
- * @author mgali
- */
 public class GameViewController implements Initializable {
 
     public static Food food = new Food();
@@ -146,6 +143,10 @@ public class GameViewController implements Initializable {
     private Button btnHost;
     @FXML
     private Button btnConnect;
+    @FXML
+    private Button btnSave;
+    @FXML
+    private Button btnLoad;
 
     private void init(boolean button) {
 
@@ -256,6 +257,30 @@ public class GameViewController implements Initializable {
         spGame.getChildren().add(root);
 
         spGame.getChildren().remove(apGameWindow);
+    }
+
+    @FXML
+    private void btnSaveClick(MouseEvent event) {
+        SavingThread savingThread = new SavingThread();
+        savingThread.setDaemon(true);
+        savingThread.start();
+
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Thread has been activated");
+        alert.setHeaderText("SAVED!");
+        alert.showAndWait();
+    }
+
+    @FXML
+    private void btnLoadClick(MouseEvent event) {
+        LoadingThread loadingThread = new LoadingThread();
+        loadingThread.setDaemon(true);
+        loadingThread.start();
+
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Thread has been activated");
+        alert.setHeaderText("LOADED!");
+        alert.showAndWait();
     }
 
     @FXML
@@ -384,7 +409,7 @@ public class GameViewController implements Initializable {
     // tick
     public void tick(GraphicsContext gc) {
         if (gameOver) {
-            String winner = "NO WINNER!";
+            String winner = "Player: won!";
             /*if(score1. > score2){
                 winner = "Player 2 WINS!";
             }
@@ -394,7 +419,7 @@ public class GameViewController implements Initializable {
             else {
                 winner = "Player 2 WINS!";
             }*/
-            lbGameResult.setText("\tGAME OVER\n Player " + winner);
+            lbGameResult.setText("\tGAME OVER\n");
             saveXML();
             return;
         }

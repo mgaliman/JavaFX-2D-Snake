@@ -7,10 +7,6 @@ package hr.algebra.model;
 
 import java.io.Serializable;
 
-/**
- *
- * @author mgali
- */
 public class ChatMessage implements Serializable{
     private String username;
     private String message;

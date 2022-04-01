@@ -13,10 +13,6 @@ import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 
-/**
- *
- * @author mgali
- */
 public class RandomColorThread implements Runnable{
     private final Parent parent;
 

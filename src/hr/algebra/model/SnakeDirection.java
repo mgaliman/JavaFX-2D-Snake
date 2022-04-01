@@ -5,10 +5,6 @@
  */
 package hr.algebra.model;
 
-/**
- *
- * @author mgali
- */
 public enum SnakeDirection {
     LEFT,
     RIGHT,

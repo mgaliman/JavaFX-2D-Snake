@@ -14,10 +14,6 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/**
- *
- * @author mgali
- */
 public class ReflectionUtils {
 
     public static void readClassInfo(Class<?> clazz, StringBuilder classInfo) {

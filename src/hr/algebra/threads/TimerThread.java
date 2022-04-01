@@ -12,10 +12,6 @@ import javafx.application.Platform;
 import javafx.scene.control.Label;
 import java.util.logging.Logger;
 
-/**
- *
- * @author mgali
- */
 public class TimerThread extends Thread{
     private Label label;
 

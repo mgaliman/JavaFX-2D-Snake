@@ -22,10 +22,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 
-/**
- *
- * @author mgali
- */
 public class JndiUtils {
 
     public JndiUtils() {

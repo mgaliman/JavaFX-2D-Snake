@@ -11,10 +11,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- *
- * @author mgali
- */
 public class SnakeSize implements Serializable {
     
     private static final long serialVersionUID = 1L;

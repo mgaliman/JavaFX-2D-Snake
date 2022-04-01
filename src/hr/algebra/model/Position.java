@@ -10,10 +10,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-/**
- *
- * @author mgali
- */
 public class Position implements Serializable {
 
     private int x;

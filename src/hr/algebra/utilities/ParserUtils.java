@@ -7,10 +7,6 @@ package hr.algebra.utilities;
 
 import hr.algebra.model.*;
 
-/**
- *
- * @author mgali
- */
 public class ParserUtils {
 
     private static final String DELIMITER = ",";

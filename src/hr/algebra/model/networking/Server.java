@@ -30,10 +30,6 @@ import static hr.algebra.controller.GameViewController.serverSnake;
 import static hr.algebra.controller.GameViewController.serverSnakeSize;
 import static hr.algebra.controller.GameViewController.serverStartingPosition;
 
-/**
- *
- * @author mgali
- */
 public class Server extends Thread {
 
     private static final String PLAYER_JOINED = "Player joined!";

@@ -5,10 +5,6 @@
  */
 package hr.algebra.model;
 
-/**
- *
- * @author mgali
- */
 public class JNDIInfo {
     private String port;
     private String name;

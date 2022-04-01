@@ -25,11 +25,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 
-/**
- * FXML Controller class
- *
- * @author mgali
- */
 public class SettingsViewController implements Initializable {
 
     @FXML

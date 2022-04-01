@@ -10,10 +10,6 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
-/**
- *
- * @author mgali
- */
 public interface MessengerService extends Remote{
     void sendMessage(ChatMessage message) throws RemoteException;
     List<ChatMessage> getAllMessages() throws RemoteException;
