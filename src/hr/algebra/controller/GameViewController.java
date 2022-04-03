@@ -486,7 +486,7 @@ public class GameViewController implements Initializable {
         }
 
         sendObjects();
-        //serverSnake.clear();
+        serverSnake.clear();
     }
 
     //Food
