@@ -26,11 +26,11 @@ public class SerializationUtils {
         }
         workInProgress = true;
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
+            System.out.println("SAVED");
+            workInProgress = false;
+            notifyAll();
             oos.writeObject(object);
         }
-        System.out.println("SAVED");
-        workInProgress = false;
-        notifyAll();
     }
 
     public synchronized Object read(String fileName) throws IOException, ClassNotFoundException, InterruptedException {

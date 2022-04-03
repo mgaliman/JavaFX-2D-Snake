@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package hr.algebra.model.networking;
 
 import java.io.BufferedReader;
@@ -25,10 +20,6 @@ import javafx.application.Platform;
 import static hr.algebra.controller.GameViewController.clientSnake;
 import static hr.algebra.controller.GameViewController.clientSnakeSize;
 import static hr.algebra.controller.GameViewController.clientStartingPosition;
-import static hr.algebra.controller.GameViewController.food;
-import static hr.algebra.controller.GameViewController.serverSnake;
-import static hr.algebra.controller.GameViewController.serverSnakeSize;
-import static hr.algebra.controller.GameViewController.serverStartingPosition;
 
 public class Server extends Thread {
 
@@ -77,7 +68,6 @@ public class Server extends Thread {
                 String greeting = "";
                 String deleteLine = in.readLine();
                 while ((greeting = in.readLine()) != null) {
-                    System.out.println("I read the message: " + greeting);
                     //Ispisi na drugi monitor...
                     Platform.runLater(() -> {
 
@@ -88,14 +78,6 @@ public class Server extends Thread {
                         for (int i = 0; i < clientSnakeSize.getSnakeLength(); i++) {
                             clientSnake.add(new Position(clientStartingPosition.getX(), clientStartingPosition.getY()));
                         }
-
-                        //food.setFoodX(GameObjects.getInstance().getFood().getFoodX());
-                        //food.setFoodY(GameObjects.getInstance().getFood().getFoodY());
-                        //food.setFoodColor(GameObjects.getInstance().getFood().getFoodColor());
-
-                        //System.out.println(
-                        //  "ServerSnake" + serverSnake + "SnakeSize" + serverSnakeSize.getSnakeLength() + "Food" + food + "Position" + serverStartingPosition);
-                        //lbScore1.setText(String.valueOf(GameObjects.getInstance().getFood().getScore()));
                     });
                 }
             }

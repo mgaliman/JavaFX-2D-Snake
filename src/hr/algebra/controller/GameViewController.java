@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package hr.algebra.controller;
 
 import java.io.BufferedReader;
@@ -91,7 +86,6 @@ public class GameViewController implements Initializable {
     public static List<Position> clientSnake = new ArrayList<>();
     public static Position clientStartingPosition = new Position();
     // variable
-    static String fileName = "Serialization.ser";
     static int speed;
     static int width;
     static int height;
@@ -100,12 +94,8 @@ public class GameViewController implements Initializable {
     static Position startingPosition = new Position();
     static boolean gameOver = false;
     static Random rand = new Random();
-    @FXML
-    public TextArea taChat;
-    @FXML
-    public TextArea taInput;
     SnakeSize snakeSize = new SnakeSize();
-    //GameObjects gameObjects = new GameObjects();
+
     //Networking
     private Socket clientSocket;
     private Server serverThread;
@@ -118,7 +108,7 @@ public class GameViewController implements Initializable {
     private BufferedReader in;
     private PrintWriter out;
     private ObjectOutputStream objectWriter;
-    //@FXML is used for getting variables from fxml
+
     @FXML
     private Canvas cnGamePlatform;
     @FXML
@@ -138,6 +128,10 @@ public class GameViewController implements Initializable {
     @FXML
     private Label lbTimer;
     @FXML
+    public TextArea taChat;
+    @FXML
+    public TextArea taInput;
+    @FXML
     private Button btnSend;
     @FXML
     private Button btnHost;
@@ -148,7 +142,7 @@ public class GameViewController implements Initializable {
     @FXML
     private Button btnLoad;
 
-    private void init(boolean button) {
+    private void init() {
 
         speed = 1;
         width = 20;
@@ -158,20 +152,18 @@ public class GameViewController implements Initializable {
 
         gameOver = false;
 
-        if (button) {
-            if (isHost) {
-                startingPosition.setX(0);
-                startingPosition.setY(19);
-            } else {
-                startingPosition.setX(19);
-                startingPosition.setY(19);
-            }
-            snakeSize.setSnakeLength(3);
-            snakeSize.setDirection(SnakeDirection.UP);
-
-            //Food for snake
-            newFood();
+        if (isHost) {
+            startingPosition.setX(0);
+            startingPosition.setY(19);
+        } else {
+            startingPosition.setX(19);
+            startingPosition.setY(19);
         }
+        snakeSize.setSnakeLength(3);
+        snakeSize.setDirection(SnakeDirection.UP);
+
+        //Food for snake
+        newFood();
 
         //Drawing on canvas
         GraphicsContext gc = cnGamePlatform.getGraphicsContext2D();
@@ -228,27 +220,8 @@ public class GameViewController implements Initializable {
     public void btnStartClick() {
         lbGameResult.setText("\tGame is running!");
         btnStart.setDisable(true);
-        init(true);
+        init();
     }
-    /*
-    @FXML
-    private void btnSaveClick(MouseEvent event) {
-        dataSerialization();
-    }
-
-    @FXML
-    private void btnLoadClick(MouseEvent event) {
-        lbGameResult.setText("\tGame is running!");
-        //gameObjects = (GameObjects) SerializationUtils.read(fileName);
-        GameObjects.getInstance().setFood(food);
-        GameObjects.getInstance().setPosition(startingPosition);
-        GameObjects.getInstance().setSnakeSize(snakeSize);
-        //food = gameObjects.getFood();
-        //startingPosition = gameObjects.getPosition();
-        //snakeSize = gameObjects.getSnakeSize();
-
-        init(false);
-    }*/
 
     @FXML
     public void btnMainMenuClick() throws IOException {
@@ -367,7 +340,6 @@ public class GameViewController implements Initializable {
                     in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                     String deleteLine = in.readLine();
                     while ((greeting = in.readLine()) != null) {
-                        //System.out.println("I read the message: " + greeting);
                         ParserUtils.parseMessage(greeting);
 
                         //Ispisi na drugi monitor...
@@ -385,8 +357,6 @@ public class GameViewController implements Initializable {
                             food.setFoodY(GameObjects.getInstance().getFood().getFoodY());
                             food.setFoodColor(GameObjects.getInstance().getFood().getFoodColor());
 
-                            //System.out.println(
-                            //  "ServerSnake" + serverSnake + "SnakeSize" + serverSnakeSize.getSnakeLength() + "Food" + food + "Position" + serverStartingPosition);
                             lbScore1.setText(String.valueOf(GameObjects.getInstance().getFood().getScore()));
                         });
                     }
@@ -410,15 +380,6 @@ public class GameViewController implements Initializable {
     public void tick(GraphicsContext gc) {
         if (gameOver) {
             String winner = "Player: won!";
-            /*if(score1. > score2){
-                winner = "Player 2 WINS!";
-            }
-            else if (score1 == score2){
-                winner = "DRAW";
-            }
-            else {
-                winner = "Player 2 WINS!";
-            }*/
             lbGameResult.setText("\tGAME OVER\n");
             saveXML();
             return;
@@ -522,17 +483,10 @@ public class GameViewController implements Initializable {
                 gc.setFill(Color.BLUE);
                 gc.fillRect(p.getX() * cornerSize, p.getY() * cornerSize, cornerSize - 2, cornerSize - 2);
             }
-        } else {
-            /*for (Position p : clientSnake) {
-                gc.setFill(Color.LIGHTYELLOW);
-                gc.fillRect(p.getX() * cornerSize, p.getY() * cornerSize, cornerSize - 1, cornerSize - 1);
-                gc.setFill(Color.YELLOW);
-                gc.fillRect(p.getX() * cornerSize, p.getY() * cornerSize, cornerSize - 2, cornerSize - 2);
-            }*/
         }
 
         sendObjects();
-        serverSnake.clear();
+        //serverSnake.clear();
     }
 
     //Food
@@ -562,7 +516,6 @@ public class GameViewController implements Initializable {
                     out = new PrintWriter(clientSocket.getOutputStream(), true);
 
                     out.println(GameObjects.getInstance());
-                    //System.out.println("I sent the message to server: " + GameObjects.getInstance() + " - " + clientSocket);
                 } catch (IOException ex) {
                     Logger.getLogger(GameViewController.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -570,10 +523,7 @@ public class GameViewController implements Initializable {
             }).start();
         } else {
             new Thread(() -> {
-
                 printStream.println(GameObjects.getInstance());
-                System.out.println("I sent the message to server: " + GameObjects.getInstance());
-
             }).start();
         }
     }
@@ -591,12 +541,10 @@ public class GameViewController implements Initializable {
     }
 
     private void saveXML() {
-        DocumentBuilderFactory documentBuilderFactory
-          = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 
         try {
-            Document xmlDocument
-              = documentBuilderFactory.newDocumentBuilder().newDocument();
+            Document xmlDocument = documentBuilderFactory.newDocumentBuilder().newDocument();
 
             Element rootElement = xmlDocument.createElement("Snake");
             xmlDocument.appendChild(rootElement);
@@ -650,8 +598,7 @@ public class GameViewController implements Initializable {
             rootElement.appendChild(directionElement);
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            Transformer transformer
-              = TransformerFactory.newInstance().newTransformer();
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
 
             Source xmlSource = new DOMSource(xmlDocument);
             Result xmlResult = new StreamResult(new File("gameplayRecord.xml"));
@@ -662,24 +609,9 @@ public class GameViewController implements Initializable {
             alert.setTitle("Information Dialog");
             alert.setHeaderText("Gameplay record create successfuly!");
 
-        } catch (Exception e){
+        } catch (Exception e) {
             Logger.getLogger(GameViewController.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
-    /*
-    private void dataSerialization() {
-        try {
-            //gameObjects = new GameObjects(food, startingPosition, snakeSize);
-            GameObjects.getInstance().getFood();
-            GameObjects.getInstance().getPosition();
-            GameObjects.getInstance().getSnakeSize();
-
-            SerializationUtils.write(GameObjects.getInstance().getFood(), fileName);
-
-        } catch (IOException ex) {
-            Logger.getLogger(GameViewController.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
-    }*/
 }
